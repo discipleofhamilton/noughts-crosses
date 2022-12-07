@@ -13,23 +13,76 @@ class Square extends React.Component {
 
     render() {
       return (
+
         // <button className="square" onClick={function() { 
         //   console.log('click');}}>
+
         <button 
           className="square" 
-          onClick={() => this.setState({value: 'X'})}
+          // replace onClick action from setState to the funciton passed from Board component
+          /*
+            When a Square component(object) is clicked, the function onClick whom offers by
+            Board would be called. Here is the description how it works:
+            1. The onClick prop in the built DOM component <button> tells React to set a 
+               click event listener
+            2. When the button is clicked, React calls the defined event handler onClick in the 
+               method Square render()
+            3. The event handeler calls this.props.onClick(). onClick prop in Square would be 
+               assigned throught Board.
+            4. Because Board pass onClick{() => this.handleClick(i)} to Square, Square calls 
+               handleClick(i) when it is clicked.
+            5. Due to undefined handleClick(), the program will crash. If you click one of the 
+               squares, the RED ERROR MESSAGE will show up "this.handleClick is not a function".
+          */
+          onClick={() => this.props.onClick()}
         >
           {/* get the prop value from Board */}
-          {this.state.value}
+          {/* replace the state value from the passing prop(value) from Board */}
+          {this.props.value}
         </button>
       );
     }
   }
   
   class Board extends React.Component {
+
+    // shared state let two child components communicate with each other
+    // the parent component(Board) pass state to the children throught props
+    // in order to sync the state between each other(children and parent)
+    constructor(props) {
+      super(props);
+      this.state = {
+        squares: Array(9).fill(null),
+      };
+    }
+
+    // Add handleClick function to handle the event and prevent the 
+    // undefined/missing function error
+    handleClick(i) {
+      /*
+        Here we use .slice() to build a copy of squares array and modify it instead of 
+        updating it directly.
+        Q: In other programming language, type `const` means constant which is irrevocable.
+           Why the following code the string 'X' can be assigned in the squares array?
+      */
+      const squares = this.state.squares.slice;
+      squares[i] = 'X';
+      this.setState({squares: squares})
+    }
+
     renderSquare(i) {
       // pass prop value to Square
-      return <Square value={i}/>;
+      // Replaced passing index of square with state('X', 'O', null)
+      /*
+        Because the state is private for its component, it can't be directly update.
+        Which means we are disable to update the state in Board from Square.
+        The solution is pass a function from Board to Square, and the function will be called
+        by Square when Square is clicked.
+      */
+      return <Square 
+                value={this.state.squares[i]}
+                onClick={() => this.handleClick(i)}
+              />; 
     }
   
     render() {
