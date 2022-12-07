@@ -62,8 +62,16 @@ class Square extends React.Component {
       /*
         Here we use .slice() to build a copy of squares array and modify it instead of 
         updating it directly.
+
         Q: In other programming language, type `const` means constant which is irrevocable.
            Why the following code the string 'X' can be assigned in the squares array?
+
+        A: The `const` declaration creates "block-scopted" constants, much like variables
+           declared using the let keyword. The value of constant in JaveScript which is the 
+           same to others programming language can't be changed through reasignment, and 
+           can't be redeclared.
+           BUT if a constant is an object or array, its properties or items can be updated 
+           or removed.
       */
       const squares = this.state.squares.slice;
       squares[i] = 'X';
