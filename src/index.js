@@ -73,6 +73,30 @@ class Square extends React.Component {
            BUT if a constant is an object or array, its properties or items can be updated 
            or removed.
       */
+      /*
+        Here is the discussion about immutability and why it is important through .slice().
+
+        Frankly, There are two ways to modify data. One is change the value of the variable 
+        directly. The other is change the replica one, and replace the original one with it.
+
+        Here is the example of changing data through Mutation:
+        var player = {score: 1, name: 'Jeff'};
+        player.score = 2; // now player is {score: 2, name: 'Jeff'}
+
+        Here is the example of changing data without Mutation:
+        var player = {score: 1, name: 'Jeff'};
+        var newPlayer = Object.assign({}, player, {score: 2});
+        // Now player doesn't changed, but newPlayer is {score: 2, name: 'Jeff'}
+        // If you want to use object spread semantic:
+        // var newPlayer = {...player, score: 2};
+
+        The results of the two examples above are the same, but here are the advantages of 
+        changing data indirectly:
+        1. Simplize the complicate funciton
+        2. Detect the move/change
+        3. Decide when to re-render in React: Help you build pure component in React make 
+           React decide some component should re-render right now
+      */
       const squares = this.state.squares.slice;
       squares[i] = 'X';
       this.setState({squares: squares})
