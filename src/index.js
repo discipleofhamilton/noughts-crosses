@@ -2,48 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
-// class Square extends React.Component {
-
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       value: null,
-//     };
-//   }
-
-//   render() {
-//     return (
-
-//       // <button className="square" onClick={function() { 
-//       //   console.log('click');}}>
-
-//       <button 
-//         className="square" 
-//         // replace onClick action from setState to the funciton passed from Board component
-//         /*
-//           When a Square component(object) is clicked, the function onClick whom offers by
-//           Board would be called. Here is the description how it works:
-//           1. The onClick prop in the built DOM component <button> tells React to set a 
-//               click event listener
-//           2. When the button is clicked, React calls the defined event handler onClick in the 
-//               method Square render()
-//           3. The event handeler calls this.props.onClick(). onClick prop in Square would be 
-//               assigned throught Board.
-//           4. Because Board pass onClick{() => this.handleClick(i)} to Square, Square calls 
-//               handleClick(i) when it is clicked.
-//           5. Due to undefined handleClick(), the program will crash. If you click one of the 
-//               squares, the RED ERROR MESSAGE will show up "this.handleClick is not a function".
-//         */
-//         onClick={() => this.props.onClick()}
-//       >
-//         {/* get the prop value from Board */}
-//         {/* replace the state value from the passing prop(value) from Board */}
-//         {this.props.value}
-//       </button>
-//     );
-//   }
-// }
-
 function Square(props) {
   return (
     <button className='square' onClick={props.onClick}>
@@ -137,7 +95,6 @@ class Board extends React.Component {
   }
 
   render() {
-    // const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     const winner = calculateWinner(this.state.squares);
     let status;
     if (winner) {
