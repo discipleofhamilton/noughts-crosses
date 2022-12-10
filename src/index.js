@@ -62,6 +62,7 @@ class Game extends React.Component {
     this.state = {
       history: [{
         squares: Array(9).fill(null), // enhence squase state from Board component to Game
+        curInd: -1, // current hit square index in the board
       }],
       xIsNext: true,
       stepNumber: 0,
@@ -129,8 +130,9 @@ class Game extends React.Component {
     // method concat() is different with push() in array, it doesn't change the original array
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
-      history: history.concat ([{
+      history: history.concat([{
         squares: squares,
+        curInd: i,
       }]),
       xIsNext: !this.state.xIsNext,
       stepNumber: history.length,
@@ -170,8 +172,10 @@ class Game extends React.Component {
     */
     const moves = history.map((step, move) => {
 
+      const row = parseInt((step.curInd / 3) + 1);
+      const col = parseInt((step.curInd % 3) + 1) ;
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + move + " (" + row + ", " + col + ")" :
         'Go to game start';
       return (
         <li key={move}>
