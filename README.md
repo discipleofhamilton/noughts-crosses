@@ -8,11 +8,11 @@ To Do List:
 3. ~~改寫 Board，使用兩個 loop 建立方格而不是寫死它。~~: Done at 2022.12.10
 4. 加上一個切換按鈕讓你可以根據每個動作由小到大、由大到小來排序。
 5. 當勝負揭曉時，把連成一條線的那三個方格凸顯出來。
-6. 當沒有勝負時，顯示遊戲結果為平手。
+6. ~~當沒有勝負時，顯示遊戲結果為平手。~~: Done at 2022.12.10
 
 1. ~~Display the location for each move in the format (col, row) in the move history list.~~: Done at 2022.12.10
 2. ~~Bold the currently selected item in the move list.~~: Done at 2022.12.10
 3. ~~Rewrite Board to use two loops to make the squares instead of hardcoding them.~~: Done at 2022.12.10
 4. Add a toggle button that lets you sort the moves in either ascending or descending order.
 5. When someone wins, highlight the three squares that caused the win.
-6. When no one wins, display a message about the result being a draw.
+6. ~~When no one wins, display a message about the result being a draw.~~: Done at 2022.12.10
