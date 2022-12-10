@@ -64,7 +64,15 @@ class Game extends React.Component {
         squares: Array(9).fill(null), // enhence squase state from Board component to Game
       }],
       xIsNext: true,
+      stepNumber: 0,
     };
+  }
+
+  jumpTo(step) {
+    this.setState({
+      stepNumber: step,
+      xIsNext: step % 2 === 0,
+    })
   }
 
   // Add handleClick function to handle the event and prevent the 
@@ -108,7 +116,7 @@ class Game extends React.Component {
       3. Decide when to re-render in React: Help you build pure component in React make 
           React decide some component should re-render right now
     */
-    const history = this.state.history;
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const cur_state = history[history.length - 1];
     const squares = cur_state.squares.slice();
 
@@ -125,6 +133,7 @@ class Game extends React.Component {
         squares: squares,
       }]),
       xIsNext: !this.state.xIsNext,
+      stepNumber: history.length,
     })
   }
 
@@ -132,7 +141,7 @@ class Game extends React.Component {
 
     // show game state through the lastest record in the history
     const history   = this.state.history;
-    const cur_state = history[history.length - 1];
+    const cur_state = history[this.state.stepNumber];
     const winner    = calculateWinner(cur_state.squares);
 
     /*
@@ -165,7 +174,7 @@ class Game extends React.Component {
         'Go to move #' + move :
         'Go to game start';
       return (
-        <li>
+        <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
