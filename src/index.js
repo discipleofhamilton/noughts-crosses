@@ -12,14 +12,56 @@ function Square(props) {
   
 class Board extends React.Component {
 
-  // shared state let two child components communicate with each other
-  // the parent component(Board) pass state to the children throught props
-  // in order to sync the state between each other(children and parent)
+  renderSquare(i) {
+    // pass prop value to Square
+    // Replaced passing index of square with state('X', 'O', null)
+    /*
+      Because the state is private for its component, it can't be directly update.
+      Which means we are disable to update the state in Board from Square.
+      The solution is pass a function from Board to Square, and the function will be called
+      by Square when Square is clicked.
+    */
+    return <Square 
+              value={this.props.squares[i]}
+              onClick={() => this.props.onClick(i)}
+            />; 
+  }
+
+  render() {
+    return (
+      <div>
+        <div className="board-row">
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
+        </div>
+        <div className="board-row">
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
+        </div>
+      </div>
+    );
+  }
+}
+  
+class Game extends React.Component {
+
+  // Here is a link talks about the difference between [] and Array()
+  // https://stackoverflow.com/questions/931872/what-s-the-difference-between-array-and-while-declaring-a-javascript-ar
+
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true, // it is a boolean to record whos' turn now
+      history: [{
+        squares: Array(9).fill(null), // enhence squase state from Board component to Game
+      }],
+      xIsNext: true,
     };
   }
 
@@ -64,7 +106,9 @@ class Board extends React.Component {
       3. Decide when to re-render in React: Help you build pure component in React make 
           React decide some component should re-render right now
     */
-    const squares = this.state.squares.slice();
+    const history = this.state.history;
+    const cur_state = history[history.length - 1];
+    const squares = cur_state.squares.slice();
 
     // If the winner exists or the Square is filled, the function is to dismiss the click
     // to return result earlier.
@@ -72,31 +116,27 @@ class Board extends React.Component {
       return;
     }
 
+    // method concat() is different with push() in array, it doesn't change the original array
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
-      squares: squares,
+      history: history.concat ([{
+        squares: squares,
+      }]),
       xIsNext: !this.state.xIsNext,
     })
   }
 
-  renderSquare(i) {
-    // pass prop value to Square
-    // Replaced passing index of square with state('X', 'O', null)
-    /*
-      Because the state is private for its component, it can't be directly update.
-      Which means we are disable to update the state in Board from Square.
-      The solution is pass a function from Board to Square, and the function will be called
-      by Square when Square is clicked.
-    */
-    return <Square 
-              value={this.state.squares[i]}
-              onClick={() => this.handleClick(i)}
-            />; 
-  }
-
   render() {
-    const winner = calculateWinner(this.state.squares);
+
+    // show game state through the lastest record in the history
+    const history   = this.state.history;
+    const cur_state = history[history.length - 1];
+    const winner    = calculateWinner(cur_state.squares);
     let status;
+
+    // Here is a link talks about the difference between var, let ,const
+    // https://totoroliu.medium.com/javascript-var-let-const-%E5%B7%AE%E7%95%B0-e3d930521230
+
     if (winner) {
       status = 'Winner: ' + winner;
     }
@@ -105,37 +145,15 @@ class Board extends React.Component {
     }
 
     return (
-      <div>
-        <div className="status">{status}</div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
-  }
-}
-  
-class Game extends React.Component {
-  render() {
-    return (
       <div className="game">
         <div className="game-board">
-          <Board />
+          <Board 
+            squares={cur_state.squares}
+            onClick={(i) => this.handleClick(i)}
+          />
         </div>
         <div className="game-info">
-          <div>{/* status */}</div>
+          <div>{status}</div>
           <ol>{/* TODO */}</ol>
         </div>
       </div>
