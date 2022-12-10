@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
+// https://zh-hant.reactjs.org/tutorial/tutorial.html
+
 function Square(props) {
   return (
     <button className='square' onClick={props.onClick}>
@@ -132,6 +134,43 @@ class Game extends React.Component {
     const history   = this.state.history;
     const cur_state = history[history.length - 1];
     const winner    = calculateWinner(cur_state.squares);
+
+    /*
+    Show the history moves to the players
+
+    React is the first-class JaveScript object. It is able to pass/delivery the objects in
+    the applications. Here introduces the method map() in React element array to render several
+    targets in React.
+    map() is usually use for comparing and transferring the data. such as:
+    const numbers = [1, 2, 3];
+    const doubled = numbers.map(x => x * 2); // [2, 4, 6]
+
+    Using map() to show list of "jump back" button to jump back the specific history move.
+
+    Here a link talks about what is first-class JavaScript object.
+    https://stackoverflow.com/questions/705173/what-is-meant-by-first-class-object
+    */
+
+    /*
+    variable step is the current value of history element
+    variable move is the current index of history element
+    we are only interested in move, so step isn't assigned any value.
+
+    Every move in the game history will be created a button in the list.
+    The button calls this.jumpTo() for onClick handler.
+    */
+    const moves = history.map((step, move) => {
+
+      const desc = move ?
+        'Go to move #' + move :
+        'Go to game start';
+      return (
+        <li>
+          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+        </li>
+      );
+    });
+
     let status;
 
     // Here is a link talks about the difference between var, let ,const
@@ -154,7 +193,7 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{/* TODO */}</ol>
+          <ol>{moves}</ol>
         </div>
       </div>
     );
