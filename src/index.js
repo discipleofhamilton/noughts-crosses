@@ -174,12 +174,13 @@ class Game extends React.Component {
 
       const row = parseInt((step.curInd / 3) + 1);
       const col = parseInt((step.curInd % 3) + 1) ;
-      const desc = move ?
+      let  desc = move ?
         'Go to move #' + move + " (" + row + ", " + col + ")" :
         'Go to game start';
+      desc = (move === this.state.stepNumber) ? <strong>{desc}</strong> : desc ;
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button id={move} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
     });
