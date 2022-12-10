@@ -23,32 +23,52 @@ class Board extends React.Component {
       The solution is pass a function from Board to Square, and the function will be called
       by Square when Square is clicked.
     */
-    return <Square 
+    return <Square
+              key={i}
+              // btnID={i}
               value={this.props.squares[i]}
               onClick={() => this.props.onClick(i)}
             />; 
   }
 
   render() {
+    // return (
+    //   <div>
+    //     <div className="board-row">
+    //       {this.renderSquare(0)}
+    //       {this.renderSquare(1)}
+    //       {this.renderSquare(2)}
+    //     </div>
+    //     <div className="board-row">
+    //       {this.renderSquare(3)}
+    //       {this.renderSquare(4)}
+    //       {this.renderSquare(5)}
+    //     </div>
+    //     <div className="board-row">
+    //       {this.renderSquare(6)}
+    //       {this.renderSquare(7)}
+    //       {this.renderSquare(8)}
+    //     </div>
+    //   </div>
+    // );
+
     return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+      <div key="board">
+        {
+            [0,1,2].map ( (n) => {
+              return <div key={n} className="board-row">
+              {
+                [n*3,n*3+1,n*3+2].map ( (m) => {
+                  return this.renderSquare(m)
+                })
+              }
+              </div>
+              
+            })
+        }
       </div>
     );
+
   }
 }
   
